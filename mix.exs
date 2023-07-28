@@ -8,14 +8,10 @@ defmodule Vsrex.MixProject do
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-
-      # Docs
-      name: "Vsrex",
-      source_url: "https://github.com/charlieroth/vsrex",
-      docs: [
-        main: "Vsrex",
-        extras: ["README.md"]
-      ]
+      description: description(),
+      package: package(),
+      docs: docs(),
+      source_url: "https://github.com/charlieroth/vsrex"
     ]
   end
 
@@ -28,7 +24,26 @@ defmodule Vsrex.MixProject do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
+    ]
+  end
+
+  defp docs() do
+    [
+      main: "Vsrex",
+      extras: ["README.md"]
+    ]
+  end
+
+  defp description() do
+    "Library to enable the creation of distributed systems via the Viewstamped Replication Protocol."
+  end
+
+  defp package() do
+    [
+      name: "vsrex",
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/charlieroth/vsrex"}
     ]
   end
 end
