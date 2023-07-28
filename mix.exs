@@ -7,7 +7,15 @@ defmodule Vsrex.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "Vsrex",
+      source_url: "https://github.com/charlieroth/vsrex",
+      docs: [
+        main: "Vsrex",
+        extras: ["README.md"]
+      ]
     ]
   end
 
