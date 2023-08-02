@@ -4,7 +4,10 @@ defmodule Vsrex.ReplicaTopology do
   alias Vsrex.{Vsr, ReplicaTopology}
 
   def init(configuration, replicas) do
-    %__MODULE__{configuration: configuration, replicas: replicas}
+    %ReplicaTopology{
+      configuration: configuration,
+      replicas: organize_replicas(replicas)
+    }
   end
 
   def replica_number(%ReplicaTopology{} = topology, replica) do
@@ -12,7 +15,25 @@ defmodule Vsrex.ReplicaTopology do
   end
 
   def add_replica(%ReplicaTopology{} = topology, replica) do
-    new_replicas = [replica | topology.replicas] |> Enum.uniq() |> Enum.sort()
-    %ReplicaTopology{topology | replicas: new_replicas}
+    new_replicas =
+      [replica | topology.replicas]
+      |> organize_replicas()
+
+    %{topology | replicas: new_replicas}
+  end
+
+  def remove_replica(%ReplicaTopology{} = topology, replica) do
+    new_replicas =
+      topology.replicas
+      |> Enum.reject(fn r -> r == replica end)
+      |> organize_replicas()
+
+    %{topology | replicas: new_replicas}
+  end
+
+  defp organize_replicas(replicas) do
+    replicas
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 end
