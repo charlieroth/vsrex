@@ -24,6 +24,7 @@ defmodule Vsrex.MixProject do
 
   defp deps do
     [
+      {:libcluster, "~> 3.3"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end
