@@ -6,8 +6,13 @@ defmodule Vsrex.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Cluster.Supervisor,
-       [Application.get_env(:libcluster, :topologies), [name: Vsrex.ClusterSupervisor]]},
+      {
+        Cluster.Supervisor,
+        [
+          Application.get_env(:libcluster, :topologies),
+          [name: Vsrex.ClusterSupervisor]
+        ]
+      },
       Vsrex.Topology,
       Vsrex.Replica
     ]
