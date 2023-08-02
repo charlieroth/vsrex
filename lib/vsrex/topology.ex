@@ -1,4 +1,11 @@
 defmodule Vsrex.Topology do
+  @moduledoc """
+  This module is responsible for managing the topology of the cluster.
+
+  `Vsrex.Topology` is concerned with holding the configuration of the cluster
+  that is shared across all replicas via libcluster. It is also serves as a source
+  of truth for the `Vsrex.Replica` module when performing VSR operations.
+  """
   alias Vsrex.ReplicaTopology
   use GenServer
 
@@ -17,20 +24,30 @@ defmodule Vsrex.Topology do
     vsrex_topology = Keyword.fetch!(topologies, :vsrex)
     vsrex_topology_config = Keyword.fetch!(vsrex_topology, :config)
     confiuration = Keyword.fetch!(vsrex_topology_config, :hosts)
-    topology = ReplicaTopology.init(confiuration, [Node.self()])
-    :net_kernel.monitor_nodes(true)
 
+    replicas =
+      if Node.list() == [] do
+        [Node.self()]
+      else
+        [Node.self() | Node.list()]
+      end
+
+    Logger.debug("[#{Node.self()}] initial replica set: #{inspect(replicas)}")
+
+    topology = ReplicaTopology.init(confiuration, replicas)
+
+    :net_kernel.monitor_nodes(true)
     {:ok, topology}
   end
 
   def handle_info({:nodeup, node}, state) do
-    Logger.info("node up: #{inspect(node)}")
+    Logger.debug("[#{Node.self()}] replica joined: #{inspect(node)}")
     {:noreply, ReplicaTopology.add_replica(state, node)}
   end
 
   def handle_info({:nodedown, node}, state) do
-    Logger.info("node down: #{inspect(node)}")
-    {:noreply, state}
+    Logger.debug("[#{Node.self()}] replica left: #{inspect(node)}")
+    {:noreply, ReplicaTopology.remove_replica(state, node)}
   end
 
   def handle_call(:state, _from, state) do
