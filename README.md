@@ -1,6 +1,12 @@
-# VSRex
+# `vsrex`
 
 Elixir implementation of the Viewstamped Replication Protocol
+
+## TODO
+
+- `Mailroom` module
+  - Always routes a message to primary replica no matter which replica receives it
+  - Can be used as a simulation tool
 
 ## Installation
 
