@@ -6,7 +6,7 @@ defmodule Vsrex.Topology do
   that is shared across all replicas via libcluster. It is also serves as a source
   of truth for the `Vsrex.Replica` module when performing VSR operations.
   """
-  alias Vsrex.ReplicaTopology
+  alias Vsrex.Replica
   use GenServer
 
   require Logger
@@ -32,9 +32,8 @@ defmodule Vsrex.Topology do
         [Node.self() | Node.list()]
       end
 
-    Logger.debug("[#{Node.self()}] initial replica set: #{inspect(replicas)}")
-
-    topology = ReplicaTopology.init(confiuration, replicas)
+    topology = Replica.Topology.init(confiuration, replicas)
+    Logger.debug("[#{Node.self()}] initial replica set: #{inspect(topology.replicas)}")
 
     :net_kernel.monitor_nodes(true)
     {:ok, topology}
@@ -42,12 +41,12 @@ defmodule Vsrex.Topology do
 
   def handle_info({:nodeup, node}, state) do
     Logger.debug("[#{Node.self()}] replica joined: #{inspect(node)}")
-    {:noreply, ReplicaTopology.add_replica(state, node)}
+    {:noreply, Replica.Topology.add_replica(state, node)}
   end
 
   def handle_info({:nodedown, node}, state) do
     Logger.debug("[#{Node.self()}] replica left: #{inspect(node)}")
-    {:noreply, ReplicaTopology.remove_replica(state, node)}
+    {:noreply, Replica.Topology.remove_replica(state, node)}
   end
 
   def handle_call(:state, _from, state) do

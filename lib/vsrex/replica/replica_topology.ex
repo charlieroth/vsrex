@@ -1,20 +1,20 @@
-defmodule Vsrex.ReplicaTopology do
+defmodule Vsrex.Replica.Topology do
   defstruct [:replicas, :configuration]
 
-  alias Vsrex.{Vsr, ReplicaTopology}
+  alias Vsrex.Replica.Topology
 
   def init(configuration, replicas) do
-    %ReplicaTopology{
+    %Topology{
       configuration: configuration,
       replicas: organize_replicas(replicas)
     }
   end
 
-  def replica_number(%ReplicaTopology{} = topology, replica) do
-    Vsr.replica_index(topology.configuration, replica)
+  def replica_number(%Topology{} = topology, replica) do
+    Vsrex.replica_index(topology.configuration, replica)
   end
 
-  def add_replica(%ReplicaTopology{} = topology, replica) do
+  def add_replica(%Topology{} = topology, replica) do
     new_replicas =
       [replica | topology.replicas]
       |> organize_replicas()
@@ -22,7 +22,7 @@ defmodule Vsrex.ReplicaTopology do
     %{topology | replicas: new_replicas}
   end
 
-  def remove_replica(%ReplicaTopology{} = topology, replica) do
+  def remove_replica(%Topology{} = topology, replica) do
     new_replicas =
       topology.replicas
       |> Enum.reject(fn r -> r == replica end)

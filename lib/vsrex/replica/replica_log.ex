@@ -1,23 +1,23 @@
-defmodule Vsrex.ReplicaLog do
+defmodule Vsrex.Replica.Log do
   defstruct [:log]
 
-  alias Vsrex.ReplicaLog
+  alias Vsrex.Replica.Log
 
-  @spec init() :: %ReplicaLog{}
+  @spec init() :: %Log{}
   def init() do
-    %ReplicaLog{log: []}
+    %Log{log: []}
   end
 
-  @spec view_number(log :: %ReplicaLog{}) :: integer()
-  def view_number(%ReplicaLog{log: []}), do: 0
+  @spec view_number(log :: %Log{}) :: integer()
+  def view_number(%Log{log: []}), do: 0
 
-  def view_number(%ReplicaLog{log: [head | _]}), do: head.view_number
+  def view_number(%Log{log: [head | _]}), do: head.view_number
 
-  @spec op_number(log :: %ReplicaLog{}) :: integer()
-  def op_number(%ReplicaLog{log: []}), do: 0
-  def op_number(%ReplicaLog{log: [head | _]}), do: head.op_number
+  @spec op_number(log :: %Log{}) :: integer()
+  def op_number(%Log{log: []}), do: 0
+  def op_number(%Log{log: [head | _]}), do: head.op_number
 
-  @spec commit_number(log :: %ReplicaLog{}) :: integer()
-  def commit_number(%ReplicaLog{log: []}), do: 0
-  def commit_number(%ReplicaLog{log: [head | _]}), do: head.commit_number
+  @spec commit_number(log :: %Log{}) :: integer()
+  def commit_number(%Log{log: []}), do: 0
+  def commit_number(%Log{log: [head | _]}), do: head.commit_number
 end

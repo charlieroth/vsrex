@@ -14,7 +14,8 @@ defmodule Vsrex.Application do
         ]
       },
       Vsrex.Topology,
-      Vsrex.Replica
+      Vsrex.Replica,
+      Vsrex.Mailroom
     ]
 
     opts = [strategy: :one_for_one, name: Vsrex.Supervisor]

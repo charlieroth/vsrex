@@ -1,4 +1,4 @@
-defmodule Vsrex.ReplicaClientTable do
+defmodule Vsrex.Replica.ClientTable do
   @moduledoc """
   Records for each client:
   - The number of its most recent request
@@ -7,10 +7,10 @@ defmodule Vsrex.ReplicaClientTable do
   """
   defstruct [:client_table]
 
-  alias Vsrex.ReplicaClientTable
+  alias Vsrex.Replica.ClientTable
 
-  @spec init() :: %ReplicaClientTable{}
+  @spec init() :: %ClientTable{}
   def init() do
-    %ReplicaClientTable{client_table: %{}}
+    %ClientTable{client_table: %{}}
   end
 end
