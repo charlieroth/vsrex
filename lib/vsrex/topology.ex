@@ -11,6 +11,7 @@ defmodule Vsrex.Topology do
 
   require Logger
 
+  @spec state() :: %Replica.Topology{}
   def state() do
     GenServer.call(__MODULE__, :state)
   end

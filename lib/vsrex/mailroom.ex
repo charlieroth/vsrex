@@ -12,6 +12,7 @@ defmodule Vsrex.Mailroom do
   require Logger
   alias Vsrex.{Topology, Replica}
 
+  @spec route(message :: any()) :: :ok
   def route(message), do: GenServer.cast(__MODULE__, {:route, message})
 
   def start_link(args) do

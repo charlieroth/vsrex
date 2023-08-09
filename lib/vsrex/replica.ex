@@ -4,10 +4,12 @@ defmodule Vsrex.Replica do
 
   require Logger
 
+  @spec state() :: %State{}
   def state() do
     GenServer.call(__MODULE__, :state)
   end
 
+  @spec receive(message :: any()) :: :ok
   def receive(message) do
     GenServer.cast(__MODULE__, {:receive, message})
   end
